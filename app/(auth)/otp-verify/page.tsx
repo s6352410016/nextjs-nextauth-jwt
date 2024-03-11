@@ -17,6 +17,7 @@ import { signUp } from "@/features/user/userSlice";
 export default function OTPVerifyPage() {
     const [userEmail, setUserEmail] = useState<string>("");
     const [disableResendBtn, setDisableResendBtn] = useState<boolean>(false);
+    const [emailVerify, setEmailVerify] = useState<string>("");
     const router = useRouter();
     const dispatch = useAppDispatch();
 
@@ -33,36 +34,37 @@ export default function OTPVerifyPage() {
 
     const OTPVerifyHandler: SubmitHandler<OTPVerifySchema> = async ({ otp }) => {
         try {
-            const emailVerify = Cookies.get("emailVerify") ?? "";
             const firstnameSignUp = Cookies.get("firstnameSignUp") ?? "";
             const lastnameSignUp = Cookies.get("lastnameSignUp") ?? "";
             const passwordSignUp = Cookies.get("passwordSignUp") ?? "";
             const flag = Cookies.get("flag") ?? "";
 
-            const resultOtpVerify = await dispatch(otpVerify({ emailVerify, otp }));
-            if (resultOtpVerify.payload === "Email or otp is not valid") {
-                return toast.error("OTP is not valid");
-            } else if (resultOtpVerify.payload === "Otp has expire") {
-                return toast.error("OTP has expire");
-            }
-
-            if (flag === "signup") {
-                const resultSignUp = await dispatch(signUp({ firstnameSignUp, lastnameSignUp, emailVerify, passwordSignUp }));
-                if (resultSignUp.payload === "Signup success") {
-                    Cookies.remove("firstnameSignUp");
-                    Cookies.remove("lastnameSignUp");
-                    Cookies.remove("emailVerify");
-                    Cookies.remove("passwordSignUp");
-                    Cookies.remove("flag");
-                    Cookies.remove("email");
-                    Cookies.remove("password");
-
-                    toast.success("Signup success");
-                    return router.push("/");
+            if (emailVerify !== "") {
+                const resultOtpVerify = await dispatch(otpVerify({ emailVerify, otp }));
+                if (resultOtpVerify.payload === "Email or otp is not valid") {
+                    return toast.error("OTP is not valid");
+                } else if (resultOtpVerify.payload === "Otp has expire") {
+                    return toast.error("OTP has expire");
                 }
-            }
 
-            router.push("/reset-password");
+                if (flag === "signup") {
+                    const resultSignUp = await dispatch(signUp({ firstnameSignUp, lastnameSignUp, emailVerify, passwordSignUp }));
+                    if (resultSignUp.payload === "Signup success") {
+                        Cookies.remove("firstnameSignUp");
+                        Cookies.remove("lastnameSignUp");
+                        Cookies.remove("emailVerify");
+                        Cookies.remove("passwordSignUp");
+                        Cookies.remove("flag");
+                        Cookies.remove("email");
+                        Cookies.remove("password");
+
+                        toast.success("Signup success");
+                        return router.push("/");
+                    }
+                }
+
+                router.push("/reset-password");
+            }
         } catch (error: any) {
             console.error(`Error: ${error}`);
         }
@@ -70,18 +72,18 @@ export default function OTPVerifyPage() {
 
     const resendOtp = async () => {
         setDisableResendBtn(true);
-        const email = Cookies.get("emailVerify") ?? "";
+        const email = emailVerify;
 
-        const resultGenOtp = await dispatch(otpGenerate({ email }));
-        if (resultGenOtp.payload === "Otp generate success") {
-            toast.success("Resend otp success");
-            setDisableResendBtn(false);
+        if (email !== "") {
+            const resultGenOtp = await dispatch(otpGenerate({ email }));
+            if (resultGenOtp.payload === "Otp generate success") {
+                toast.success("Resend otp success");
+                setDisableResendBtn(false);
+            }
         }
     }
 
     const obscureEmailText = () => {
-        const emailVerify = Cookies.get("emailVerify") ?? "";
-
         if (emailVerify !== "") {
             const [email, domain] = emailVerify.split('@');
             const firstTextEmail = email[0];
@@ -97,8 +99,12 @@ export default function OTPVerifyPage() {
     useEffect(() => {
         document.title = "bynsocial | otp-verify";
 
-        obscureEmailText();
+        setEmailVerify(Cookies.get("emailVerify") ?? "");
     }, []);
+
+    useEffect(() => {
+        obscureEmailText();
+    }, [emailVerify]);
 
     return (
         <>

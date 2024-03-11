@@ -34,15 +34,17 @@ export default function ResetPasswordPage() {
     const resetPWDHandler: SubmitHandler<PWDSchema> = async ({ confirmNewPassword }) => {
         const password = confirmNewPassword;
         const email = Cookies.get("emailVerify") ?? "";
-        const resultResetPWD = await dispatch(resetPWD({ email, password }));
-        if (resultResetPWD.payload === "Password updated success") {
-            Cookies.remove("email");
-            Cookies.remove("password");
-            Cookies.remove("emailVerify");
-            Cookies.remove("flag");
+        if (email !== "") {
+            const resultResetPWD = await dispatch(resetPWD({ email, password }));
+            if (resultResetPWD.payload === "Password updated success") {
+                Cookies.remove("email");
+                Cookies.remove("password");
+                Cookies.remove("emailVerify");
+                Cookies.remove("flag");
 
-            toast.success("Reset password");
-            router.push("/");
+                toast.success("Reset password");
+                router.push("/");
+            }
         }
     }
 
