@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export const middleware = async (req: NextRequest) => {
-  if (req.nextUrl.pathname === "/feed") {
+  if (req.nextUrl.pathname === "/feed" || req.nextUrl.pathname === "/find-people") {
     const token = await getToken({
       req,
       secret: process.env.NEXTAUTH_SECRET as string,
@@ -24,5 +24,5 @@ export const middleware = async (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/feed", "/otp-verify", "/reset-password"],
+  matcher: ["/feed", "/otp-verify", "/reset-password", "/find-people"],
 }

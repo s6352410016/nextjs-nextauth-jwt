@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import NotificationData from "@/components/ui/NotificationData";
 
@@ -51,7 +53,7 @@ export default function NotificationPopup({ setOpenNotification }: NotificationP
     return (
         <div ref={notificationPopupContainerRef} className="absolute top-[120%] right-0 w-[350px] h-[400px] flex flex-col p-4 shadow-[0_4px_16px_rgba(17,17,26,.05),_0_8px_32px_rgba(17,17,26,.05)] rounded-[10px]">
             <h1 className="text-center text-xl text-[#353535] font-bold">Notifications</h1>
-            <div className="border border-solid border-gray-100 mt-4 w-[90%]"></div>
+            <div className="border border-solid border-gray-200 mt-4 w-[100%]"></div>
             <div className="w-full h-full overflow-y-scroll cursor-pointer">
                 {notifications.map((noti, index) => (
                     <NotificationData key={index} img={noti.img} name={noti.name} detail={noti.detail} createdAt={noti.createdAt} />
