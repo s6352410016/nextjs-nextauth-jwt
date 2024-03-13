@@ -27,7 +27,7 @@ interface SearchPeopleResultProp {
     setOpenSearchPeopleResult: (value: React.SetStateAction<boolean>) => void;
 }
 
-export default function SearchPeopleResult({ search, setOpenSearchPeopleResult }: SearchPeopleResultProp) {
+export default function SearchPeoplePopup({ search, setOpenSearchPeopleResult }: SearchPeopleResultProp) {
     const [userLength, setUserLength] = useState<number>(0);
     const searchPeopleResultContainerRef = useRef<HTMLDivElement>(null);
 
@@ -49,8 +49,8 @@ export default function SearchPeopleResult({ search, setOpenSearchPeopleResult }
     }, []);
 
     return (
-        <div ref={searchPeopleResultContainerRef} className={`absolute top-[100%] w-full ${userLength > 3 ? "h-[260px]" : ""} flex flex-col shadow-[0_4px_16px_rgba(17,17,26,.05),_0_8px_32px_rgba(17,17,26,.05)] rounded-[10px]`}>
-            <div className="w-full h-full overflow-y-scroll cursor-pointer p-4">
+        <div ref={searchPeopleResultContainerRef} className={`bg-[#fff] absolute top-[100%] p-4 w-full ${userLength > 3 ? "h-[260px]" : ""} flex flex-col shadow-[0_4px_16px_rgba(17,17,26,.05),_0_8px_32px_rgba(17,17,26,.05)] rounded-[10px]`}>
+            <div style={{ scrollbarWidth: "thin" }} className="w-full h-full overflow-y-auto cursor-pointer">
                 {userLength !== 0
                     ?
                     users.filter((user) => {

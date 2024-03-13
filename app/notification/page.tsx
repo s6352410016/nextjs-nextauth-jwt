@@ -35,8 +35,8 @@ export default function NotificationPage() {
                 </div>
                 <p className="text-[#353535] text-base">Notifications</p>
             </div>
-            <div className="border border-solid border-gray-200 mt-4 w-full"></div>
-            <div className="w-full h-full overflow-y-scroll cursor-pointer mt-2">
+            <div className="border border-solid border-gray-200 my-4 w-full"></div>
+            <div className="w-full h-full overflow-y-scroll cursor-pointer">
                 {notifications.map((noti, index) => (
                     <NotificationData key={index} img={noti.img} name={noti.name} detail={noti.detail} createdAt={noti.createdAt} />
                 ))}

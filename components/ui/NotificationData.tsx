@@ -10,7 +10,7 @@ interface NotificationDataProp {
 
 export default function NotificationData({ img, name, detail, createdAt }: NotificationDataProp) {
     return (
-        <Link href="#" className="w-full h-[80px] my-2 flex gap-3 items-center hover:bg-[#DADDE1] duration-200 rounded-[5px]">
+        <Link href="#" className="w-full h-[80px] flex gap-3 items-center hover:bg-[#f3f3f3] duration-200 rounded-[5px]">
             <div className="w-[50px] h-[50px] ml-2 overflow-hidden rounded-full max-[480px]:w-[40px] max-[480px]:h-[40px]">
                 <Image src={img} width={100} height={100} alt="userProfileImage" />
             </div>
